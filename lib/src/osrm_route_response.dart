@@ -1,44 +1,60 @@
-class OsrmRouteResponse {
-  late List<OsrmRoute> routes;
+import 'package:equatable/equatable.dart';
 
-  OsrmRouteResponse(this.routes);
+class OsrmRouteResponse extends Equatable {
+  final List<OsrmRoute> routes;
 
-  OsrmRouteResponse.fromJson(Map<String, dynamic> data) {
-    routes = List.of(data['routes'])
-    .map((e) => OsrmRoute.fromJson(e)).toList();
+  const OsrmRouteResponse(this.routes);
+
+  factory OsrmRouteResponse.fromJson(Map<String, dynamic> data) {
+    return OsrmRouteResponse(
+      List.of(data['routes']).map((e) => OsrmRoute.fromJson(e)).toList(),
+    );
   }
+
+  @override
+  List<Object?> get props => [routes];
 }
 
-class OsrmRoute {
-  late OsrmGeometry geometry;
-  late double duration;
-  late double distance;
+class OsrmRoute extends Equatable {
+  final OsrmGeometry geometry;
+  final double duration;
+  final double distance;
 
-  OsrmRoute(this.geometry, this.duration, this.distance);
+  const OsrmRoute(this.geometry, this.duration, this.distance);
 
-  OsrmRoute.fromJson(Map<String, dynamic> data) {
-    geometry = OsrmGeometry.fromJson(data['geometry']);
-    duration = data['duration'];
-    distance = data['distance'];
+  factory OsrmRoute.fromJson(Map<String, dynamic> data) {
+    return OsrmRoute(
+      OsrmGeometry.fromJson(data['geometry']),
+      data['duration'],
+      data['distance'],
+    );
   }
+
+  @override
+  List<Object?> get props => [geometry, duration, distance];
 }
 
-class OsrmGeometry {
-
+class OsrmGeometry extends Equatable {
   final List<OsrmCoordinate> coordinates;
 
-  OsrmGeometry(this.coordinates);
+  const OsrmGeometry(this.coordinates);
 
-  OsrmGeometry.fromJson(Map<String, dynamic> data):
-        coordinates = (data['coordinates'] as List)
-            .map((e) => OsrmCoordinate.fromJson(e)).toList();
+  OsrmGeometry.fromJson(Map<String, dynamic> data)
+      : coordinates = (data['coordinates'] as List)
+            .map((e) => OsrmCoordinate.fromJson(e))
+            .toList();
+
+  @override
+  List<Object?> get props => [coordinates];
 }
 
-class OsrmCoordinate {
+class OsrmCoordinate extends Equatable {
   final List<double> points;
 
-  OsrmCoordinate(this.points);
+  const OsrmCoordinate(this.points);
 
-  OsrmCoordinate.fromJson(List<dynamic> data):
-        points = data.cast<double>();
+  OsrmCoordinate.fromJson(List<dynamic> data) : points = data.cast<double>();
+
+  @override
+  List<Object?> get props => [points];
 }
